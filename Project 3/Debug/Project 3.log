@@ -1,0 +1,5 @@
+﻿  main.cpp
+C:\Users\Jesus Perez\source\repos\Project 3\Project 3\main.cpp(11,33): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+C:\Users\Jesus Perez\source\repos\Project 3\Project 3\main.cpp(59,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Jesus Perez\source\repos\Project 3\Project 3\main.cpp(75,23): warning C4018: '<': signed/unsigned mismatch
+  Project 3.vcxproj -> C:\Users\Jesus Perez\source\repos\Project 3\Debug\Project 3.exe

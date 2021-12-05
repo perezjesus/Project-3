@@ -1,0 +1,16 @@
+﻿  Graph.cpp
+C:\Users\Jesus Perez\es-ES\Downloads\Project 3\Project 3\Graph.h(88,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Jesus Perez\es-ES\Downloads\Project 3\Project 3\Graph.cpp(36,19): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+  main.cpp
+C:\Users\Jesus Perez\es-ES\Downloads\Project 3\Project 3\Graph.h(88,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Jesus Perez\es-ES\Downloads\Project 3\Project 3\main.cpp(11,33): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+C:\Users\Jesus Perez\es-ES\Downloads\Project 3\Project 3\main.cpp(38,54): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Jesus Perez\es-ES\Downloads\Project 3\Project 3\main.cpp(40,60): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Jesus Perez\es-ES\Downloads\Project 3\Project 3\main.cpp(42,54): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Jesus Perez\es-ES\Downloads\Project 3\Project 3\main.cpp(44,63): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Jesus Perez\es-ES\Downloads\Project 3\Project 3\main.cpp(83,80): error C2660: 'Graph::findFriendsDFS': function does not take 1 arguments
+C:\Users\Jesus Perez\es-ES\Downloads\Project 3\Project 3\Graph.h(103,36): message : see declaration of 'Graph::findFriendsDFS'
+C:\Users\Jesus Perez\es-ES\Downloads\Project 3\Project 3\main.cpp(84,80): error C2660: 'Graph::findFriendsBFS': function does not take 1 arguments
+C:\Users\Jesus Perez\es-ES\Downloads\Project 3\Project 3\Graph.h(20,36): message : see declaration of 'Graph::findFriendsBFS'
+  Generating Code...
+C:\Users\Jesus Perez\es-ES\Downloads\Project 3\Project 3\Graph.cpp(39): warning C4715: 'Graph::getLevel': not all control paths return a value
