@@ -1,108 +1,317 @@
+
 #include "Graph.h"
-#include <random>
 #include <ctime>
+#include <chrono>
+using namespace std::chrono;
+typedef high_resolution_clock Clock;
 
-
-class Random {
-    static std::mt19937 random;
-public:
-    static int RandInt(int min, int max);
-};
-std::mt19937 Random::random(time(0));
-int Random::RandInt(int min, int max) {
-    std::uniform_int_distribution<int> dist(min, max);
-    return dist(random);
-}
-void getStrings(vector<string>& strings, string filePath) {
-    ifstream file(filePath);
-    if (file.is_open()) {
-        string current;
-        while (getline(file, current)) {
-            strings.push_back(current);
-        }
-    }
-}
-vector<Person> randomPersons(int size) {
-    vector<Person> persons;
-    vector<string> namesList;
-    vector<string> musicList;
-    vector<string> personalityList;
-    vector<string> nationalitiesList;
-    getStrings(namesList, "names.txt");
-    getStrings(musicList, "music.txt");
-    getStrings(personalityList, "personalities.txt");
-    getStrings(nationalitiesList, "nationalities.txt");
-    Random rand;
-    for (int i = 1; i < size; i++) {
-        int ni = rand.RandInt(0, namesList.size() - 1);
-        string n = namesList[ni];
-        int pi = rand.RandInt(0, personalityList.size() - 1);
-        string p = personalityList[pi];
-        int mi = rand.RandInt(0, musicList.size() - 1);
-        string m = musicList[mi];
-        int nai = rand.RandInt(0, nationalitiesList.size() - 1);
-        string na = nationalitiesList[nai];
-        persons.push_back(Person(n, p, m, na, i));
-    }
-    return persons;
-}
 
 int main()
 {
-
     string name;
     string personality;
     string music;
     string nationality;
+    
+    /*string personality2;
+    string music2;
+    string nationality2;*/
     int ID = 0;
 
-    cout << "Enter Name: \n";  cin >> name; cout << "Enter Personality: \n";  cin >> name;
+    name = "Jesus";
+    personality = "Funny";
+    music = "Pop";
+    nationality = "American";
+
+    cout << "Welcome to the Friendship Recommender!\n\n";
+
+
+   /* cout << "Please enter your name: \n";  
+    getline(cin, name);
+    cout << "Enter one of your personality traits: \n";  
+    getline(cin, personality);
+    cout << "Enter your favorite music genre: \n";  
+    getline(cin, music);
+    cout << "Enter your nationality: \n";  
+    getline(cin, nationality);
+    cout << "\n\n";*/
+
+   /* cout << "Create ideal friend: \n\n";
+    cout << "Enter a personality trait: \n";  
+    cin >> personality2;
+    cout << "Enter a music genre: \n";  
+    cin >> music2; 
+    cout << "Enter a nationality: \n";  
+    cin >> nationality2;
+    cout << "\n\n";*/
     
-	vector<Person> people;
-    people = randomPersons(100);
-	Graph network;
-    Random rand;
+    
+    Person src(name, personality, music, nationality, ID);
 
-	for (int i = 0; i < people.size(); i++)
-	{
-		for (int u = 0; u < 2; u++)
-		{
-            int r = rand.RandInt(0, 99);
+    auto begin = Clock::now();
+    Graph network(100000, 5, src);
+    auto end = Clock::now();
+    auto time = (double)chrono::duration_cast<chrono::nanoseconds>(end - begin).count() / (1000000000);
+    cout << "Network: " << time << " seconds\n\n";
+ 
 
-            if (r != i)
-            {
-                network.insertEdge(people.at(i), people.at(r));
-            }
-		}
-	}
+    begin = Clock::now();
+    vector<vector<pair<Person, int>>> BFSAL1 = network.findFriendsBFS(src, personality, music, nationality);
+    end = Clock::now();
+    time = (double)chrono::duration_cast<chrono::nanoseconds>(end - begin).count() / (1000000000);
+    cout << "BFS: " << time << " seconds\n\n";
+        /*vector<vector<pair<string, int>>> DFS = network.findFriendsDFS(people.at(0), personality, music, nationality);
+        vector<vector<pair<string, int>>> BFSEL = network2.friendsBFS(people.at(0), personality, music, nationality);
+        vector<vector<pair<string, int>>> DFSEL = network2.friendsDFS(people.at(0), personality, music, nationality);*/
 
-    vector<vector<pair<string, int>>> DFS = network.findFriendsDFS(people.at(0), personality, music, nationality);
-    vector<vector<pair<string, int>>> BFS = network.findFriendsBFS(people.at(0), personality, music, nationality);
+        /*  vector<pair<string, int>> fPers = DFS.at(0);
+          vector<pair<string, int>> fMusic = DFS.at(1);
+          vector<pair<string, int>> fNation = DFS.at(2);
 
-        vector<pair<string, int>> fPers = DFS.at(0);
-        vector<pair<string, int>> fMusic = DFS.at(1);
-        vector<pair<string, int>> fNation = DFS.at(2);
+          vector<pair<string, int>> fPM = DFS.at(3);
+          vector<pair<string, int>> fPN = DFS.at(4);
+          vector<pair<string, int>> fMN = DFS.at(5);
+          vector<pair<string, int>> fPMN = DFS.at(6);*/
 
-        vector<pair<string, int>> fPM = DFS.at(3);
-        vector<pair<string, int>> fPN = DFS.at(4);
-        vector<pair<string, int>> fMN = DFS.at(5);
-        vector<pair<string, int>> fPMN = DFS.at(6);
+    vector<pair<Person, int>> fPers = BFSAL1.at(0);
+    vector<pair<Person, int>> fMusic = BFSAL1.at(1);
+    vector<pair<Person, int>> fNation = BFSAL1.at(2);
+    vector<pair<Person, int>> fPM = BFSAL1.at(3);
+    vector<pair<Person, int>> fPN = BFSAL1.at(4);
+    vector<pair<Person, int>> fMN = BFSAL1.at(5);
+    vector<pair<Person, int>> fPMN = BFSAL1.at(6);
 
-        vector<pair<string, int>> fPers2 = BFS.at(0);
+        /*vector<pair<string, int>> fPers2 = BFSAL2.at(0);
+        vector<pair<string, int>> fMusic2 = BFSAL2.at(1);
+        vector<pair<string, int>> fNation2 = BFSAL2.at(2);
+        vector<pair<string, int>> fPM2 = BFSAL2.at(3);
+        vector<pair<string, int>> fPN2 = BFSAL2.at(4);
+        vector<pair<string, int>> fMN2 = BFSAL2.at(5);
+        vector<pair<string, int>> fPMN2 = BFSAL2.at(6);*/
 
-        cout << "Friends: ";
-        for (int i = 0; i < fPers.size(); i++)
+        /*vector<pair<string, int>> fPersEL = BFSEL.at(0);
+        vector<pair<string, int>> fPers2EL = DFSEL.at(0);*/
+
+        
+
+    bool cont = true;
+    while (cont)
+    {
+        cout << "Recommend by: \n" << "1. My traits\n" << "2. Chosen Traits\n" << "3. End Program\n\n";
+        int input1;
+        cin >> input1;
+
+        if (input1 == 1)
         {
-            cout << fPers.at(i).first << ": " << fPers.at(i).second << " ";
+            bool cont2 = true;
+            while (cont2)
+            {
+                int input2;
+                cout << "Recommend by: \n" << "1. Personality\n" << "2. Music\n" << "3. Nationality\n"
+                    << "4. Double Matches\n" << "5. Triple match\n" << "6. Change to my/chosen traits\n\n";
+                cin >> input2;
+                if (input2 == 1)
+                {
+                    cout << "Recommending by Personality: \n" << "Your closest matches are... \n\n";
+                    for (int i = 0; i < 3; i++)
+                    {
+                        cout << fPers.at(i).first.getName() << ", " << fPers.at(i).second << " friends(s) away!\n" << "Path: ";
+                        network.printPath(src, fPers.at(i).first);
+                        cout << "\n\n";
+                    }
+                }
+                if (input2 == 2)
+                {
+                    cout << "Recommending by Music Genre: \n" << "Your closest matches are... \n\n"; 
+                    for (int i = 0; i < 3; i++)
+                    {
+                        cout << fMusic.at(i).first.getName() << ", " << fMusic.at(i).second << " friends(s) away!\n" << "Path: ";
+                        network.printPath(src, fMusic.at(i).first);
+                        cout << "\n\n";
+                    }
+                }
+                if (input2 == 3)
+                {
+                    cout << "Recommending by Nationality: \n" << "Your closest matches are... \n\n";
+                    for (int i = 0; i < 3; i++)
+                    {
+                        cout << fNation.at(i).first.getName() << ", " << fNation.at(i).second << " friends(s) away!\n" << "Path: ";
+                        network.printPath(src, fNation.at(i).first);
+                        cout << "\n\n";
+                    }
+                }
+                if (input2 == 4)
+                {
+                    cout << "Showing double matches: \n" 
+                        << "Personality + Music: " << fPM.at(0).first.getName()
+                        << ", " << fPM.at(0).second << " friend(s) away!\n" << "Path: ";
+                    network.printPath(src, fPM.at(0).first);
+                    cout << "\n\n";
+                       cout << "Personality + Nationality: " << fPN.at(0).first.getName()
+                        << ", " << fPN.at(0).second << " friend(s) away!\n" << "Path: ";
+                       network.printPath(src, fPN.at(0).first);
+                       cout << "\n\n";
+                        cout << "Music + Nationality: " << fMN.at(0).first.getName()
+                        << ", " << fMN.at(0).second << " friend(s) away!\n" << "Path: ";
+                        network.printPath(src, fMN.at(0).first);
+                        cout << "\n\n";
+                }
+                if (input2 == 5)
+                {
+                    cout << "Showing triple matches: \n";
+                    int max = 3;
+                    if (fPMN.size() < 3)
+                        max = fPMN.size();
+                    for (int i = 0; i < max; i++)
+                    {
+                        cout << fPMN.at(i).first.getName() << ", " << fPMN.at(i).second << " friend(s) away!\n" << "Path: ";
+                        network.printPath(src, fPMN.at(i).first);
+                        cout << "\n\n";
+                    }
+                    cout << endl;
+                }
+                if (input2 == 6)
+                    cont2 = false;
+            }
         }
-        cout << "\n\nBFS: \n";
+        if (input1 == 2)
+        {
+            string personality2;
+            string music2;
+            string nationality2;
+
+            cout << "Search new traits: \n\n";
+            cout << "Enter a personality trait: \n";
+            getline(cin, personality2);
+            getline(cin, personality2);
+            cout << "Enter a music genre: \n";
+            getline(cin, music2);
+            cout << "Enter a nationality: \n";
+            getline(cin, nationality2);
+            cout << "\n\n";
+            cout << "Searching new traits...\n\n";
+
+            auto begin = Clock::now();
+
+            vector<vector<pair<Person, int>>> BFSAL2 = network.findFriendsBFS(src, personality2, music2, nationality2);
+
+            auto end = Clock::now();
+            auto time = (double)chrono::duration_cast<chrono::nanoseconds>(end - begin).count() / (1000000000);
+
+            cout << "BFS2 List: " << time << " seconds\n\n";
+
+            vector<pair<Person, int>> fPers2 = BFSAL2.at(0);
+            vector<pair<Person, int>> fMusic2 = BFSAL2.at(1);
+            vector<pair<Person, int>> fNation2 = BFSAL2.at(2);
+            vector<pair<Person, int>> fPM2 = BFSAL2.at(3);
+            vector<pair<Person, int>> fPN2 = BFSAL2.at(4);
+            vector<pair<Person, int>> fMN2 = BFSAL2.at(5);
+            vector<pair<Person, int>> fPMN2 = BFSAL2.at(6);
+
+            bool cont2 = true;
+            while (cont2)
+            {
+                int input2;
+                cout << "Recommend by: \n" << "1. Personality\n" << "2. Music\n" << "3. Nationality\n"
+                    << "4. Double Matches\n" << "5. Triple match\n" << "6. Change to my/chosen traits\n\n";
+                cin >> input2;
+                if (input2 == 1)
+                {
+                    cout << "Recommending by Personality: \n" << "Your closest matches are... \n\n";
+                    for (int i = 0; i < 3; i++)
+                    {
+                        cout << fPers2.at(i).first.getName() << ", " << fPers2.at(i).second << " friends(s) away!\n" << "Path: ";
+                        network.printPath(src, fPers2.at(i).first);
+                        cout << "\n\n";
+                    }
+                }
+                if (input2 == 2)
+                {
+                    cout << "Recommending by Music Genre: \n" << "Your closest matches are... \n\n";
+                    for (int i = 0; i < 3; i++)
+                    {
+                        cout << fMusic2.at(i).first.getName() << ", " << fMusic2.at(i).second << " friends(s) away!\n" << "Path: ";
+                        network.printPath(src, fMusic2.at(i).first);
+                        cout << "\n\n";
+                    }
+                }
+                if (input2 == 3)
+                {
+                    cout << "Recommending by Nationality: \n" << "Your closest matches are... \n\n";
+                    for (int i = 0; i < 3; i++)
+                    {
+                        cout << fNation2.at(i).first.getName() << ", " << fNation2.at(i).second << " friends(s) away!\n" << "Path: ";
+                        network.printPath(src, fNation2.at(i).first);
+                        cout << "\n\n";
+                    }
+                }
+                if (input2 == 4)
+                {
+                    cout << "Showing double matches: \n"
+                        << "Personality + Music: " << fPM2.at(0).first.getName()
+                        << ", " << fPM2.at(0).second << " friend(s) away!\n" << "Path: ";
+                    network.printPath(src, fPM2.at(0).first);
+                    cout << "\n\n";
+                    cout << "Personality + Nationality: " << fPN2.at(0).first.getName()
+                        << ", " << fPN2.at(0).second << " friend(s) away!\n" << "Path: ";
+                    network.printPath(src, fPN2.at(0).first);
+                    cout << "\n\n";
+                    cout << "Music + Nationality: " << fMN2.at(0).first.getName()
+                        << ", " << fMN2.at(0).second << " friend(s) away!\n" << "Path: ";
+                    network.printPath(src, fMN2.at(0).first);
+                    cout << "\n\n";
+                }
+                if (input2 == 5)
+                {
+                    cout << "Showing triple matches: \n";
+                    int max = 3;
+                    if (fPMN2.size() < 3)
+                        max = fPMN2.size();
+                    for (int i = 0; i < max; i++)
+                    {
+                        cout << fPMN2.at(i).first.getName() << ", " << fPMN2.at(i).second << " friend(s) away!\n" << "Path: ";
+                        network.printPath(src, fPMN2.at(i).first);
+                        cout << "\n\n";
+                    }
+                    cout << endl;
+                }
+                if (input2 == 6)
+                    cont2 = false;
+            }
+        }
+
+        if (input1 == 3)
+            cont = false;
+
+
+    }
+
+        /*for (int i = 0; i < fPers.size(); i++)
+        {
+            cout << fPers.at(i).first.getName() << ": " << fPers.at(i).second << " ";
+        }*/
+     /*   cout << "\n\nAdjacency List: \n\n";
         for (int i = 0; i < fPers2.size(); i++)
         {
-            cout << fPers2.at(i).first << ": " << fPers2.at(i).second << " ";
+            cout << fPers2.at(i).first.getName() << ": " << fPers2.at(i).second << " ";
         }
-      
 
-    
+        cout << endl;
+        cout << "\n\nEdge List: \n\n";
+        cout << "BFS: \n";*/
+       /* for (int i = 0; i < fPersEL.size(); i++)
+        {
+            cout << fPersEL.at(i).first.getName() << ": " << fPersEL.at(i).second << " ";
+        }
+        cout << endl;
+        cout << "DFS: \n";
+        for (int i = 0; i < fPers2EL.size(); i++)
+        {
+            cout << fPers2EL.at(i).first.getName() << ": " << fPers2EL.at(i).second << " ";
+        }*/
+        
+        cout << endl;
+
 
 
 	return 0;

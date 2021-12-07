@@ -1,6 +1,7 @@
 #include "Person.h"
 
-Person::Person(string name, string personality, string music, string nationality, int ID) {
+Person::Person(string name, string personality, string music, string nationality, int ID) 
+{
     this->name = name;
     this->personality = personality;
     this->music = music;
@@ -27,7 +28,15 @@ string Person::getNationality()
 {
     return nationality;
 }
-
-void Person::printInfo() {
+int Person::getLevel()
+{
+    return level;
+}
+void Person::setLevel(int l)
+{
+    level = l;
+}
+void Person::printInfo() 
+{
     cout << name << "\t" << personality << "\t" << music << "\t" << nationality << "\t" << ID << endl;
 }
