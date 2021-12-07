@@ -1,10 +1,4 @@
-﻿  GraphEL.cpp
-C:\Users\Jesus Perez\es-ES\Downloads\Project 3\Project 3\GraphEL.cpp(14,35): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-C:\Users\Jesus Perez\es-ES\Downloads\Project 3\Project 3\GraphEL.cpp(43,48): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\Jesus Perez\es-ES\Downloads\Project 3\Project 3\GraphEL.cpp(45,54): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\Jesus Perez\es-ES\Downloads\Project 3\Project 3\GraphEL.cpp(47,48): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\Jesus Perez\es-ES\Downloads\Project 3\Project 3\GraphEL.cpp(49,57): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\Jesus Perez\es-ES\Downloads\Project 3\Project 3\GraphEL.cpp(116,19): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\Jesus Perez\es-ES\Downloads\Project 3\Project 3\GraphEL.cpp(194,19): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\Jesus Perez\es-ES\Downloads\Project 3\Project 3\GraphEL.cpp(119): warning C4715: 'GraphEL::getLevelEL': not all control paths return a value
+﻿  main.cpp
+C:\Users\Jesus Perez\es-ES\Downloads\Project 3\Project 3\main.cpp(134,42): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Jesus Perez\es-ES\Downloads\Project 3\Project 3\main.cpp(239,43): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
   Project 3.vcxproj -> C:\Users\Jesus Perez\es-ES\Downloads\Project 3\x64\Debug\Project 3.exe
