@@ -58,6 +58,12 @@ void clear2(queue<Person>& q2)
 	queue<Person> empty;
 	swap(q2, empty);
 }
+void clear2S(stack<Person>& s2)
+{
+	stack<Person> empty;
+	swap(s2, empty);
+}
+
 
 GraphEL::GraphEL(int size, int numFriends, Person source)
 {
@@ -205,7 +211,7 @@ vector<vector<pair<Person, int>>> GraphEL::friendsBFS(Person source, string p, s
 	return final;
 }
 
-vector<vector<pair<string, int>>> GraphEL::friendsDFS(Person source, string p, string m, string n)
+vector<vector<pair<Person, int>>> GraphEL::friendsDFS(Person source, string p, string m, string n)
 {
 	set<Person> visited;
 	stack<Person> q;
@@ -216,14 +222,14 @@ vector<vector<pair<string, int>>> GraphEL::friendsDFS(Person source, string p, s
 	string srcMusic = m;
 	string srcNation = n;
 
-	vector<pair<string, int>> friend1;
-	vector<pair<string, int>> friend2;
-	vector<pair<string, int>> friend3;
-	vector<pair<string, int>> friendPM;
-	vector<pair<string, int>> friendPN;
-	vector<pair<string, int>> friendMN;
-	vector<pair<string, int>> friendPMN;
-	vector<vector<pair<string, int>>> final;
+	vector<pair<Person, int>> friend1;
+	vector<pair<Person, int>> friend2;
+	vector<pair<Person, int>> friend3;
+	vector<pair<Person, int>> friendPM;
+	vector<pair<Person, int>> friendPN;
+	vector<pair<Person, int>> friendMN;
+	vector<pair<Person, int>> friendPMN;
+	vector<vector<pair<Person, int>>> final;
 
 	int size = 1;
 
@@ -242,25 +248,31 @@ vector<vector<pair<string, int>>> GraphEL::friendsDFS(Person source, string p, s
 				{
 					if (v.getPersonality() == srcPers)
 					{
-						friend1.push_back({ v.getName(), level });
+						friend1.push_back({ v, level });
 						if (v.getMusic() == srcMusic)
 						{
-							friendPM.push_back({ v.getName(), level });
+							friendPM.push_back({ v, level });
 							if (v.getNationality() == srcNation)
-								friendPMN.push_back({ v.getName(), level });
+							{
+								friendPMN.push_back({ v, level });
+								if (friendPMN.size() == 3)
+								{
+									clear2S(q);
+								}
+							}
 						}
 						if (v.getNationality() == srcNation)
-							friendPN.push_back({ v.getName(), level });
+							friendPN.push_back({ v, level });
 
 					}
 					if (v.getMusic() == srcMusic)
 					{
-						friend2.push_back({ v.getName(), level });
+						friend2.push_back({ v, level });
 						if (v.getNationality() == srcNation)
-							friendMN.push_back({ v.getName(), level });
+							friendMN.push_back({ v, level });
 					}
 					if (v.getNationality() == srcNation)
-						friend3.push_back({ v.getName(), level });
+						friend3.push_back({ v, level });
 				}
 				visited.insert(v);
 				q.push(v);

@@ -1,4 +1,6 @@
 ﻿  main.cpp
-C:\Users\Jesus Perez\es-ES\Downloads\Project 3\Project 3\main.cpp(134,42): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\Jesus Perez\es-ES\Downloads\Project 3\Project 3\main.cpp(239,43): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Jesus Perez\es-ES\Downloads\Project 3\Project 3\main.cpp(154,46): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Jesus Perez\es-ES\Downloads\Project 3\Project 3\main.cpp(259,47): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Jesus Perez\es-ES\Downloads\Project 3\Project 3\main.cpp(426,51): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Jesus Perez\es-ES\Downloads\Project 3\Project 3\main.cpp(553,51): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
   Project 3.vcxproj -> C:\Users\Jesus Perez\es-ES\Downloads\Project 3\x64\Debug\Project 3.exe
