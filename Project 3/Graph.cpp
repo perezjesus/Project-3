@@ -227,6 +227,7 @@ vector<vector<pair<Person, int>>> Graph::findFriendsBFS(Person source, string p,
 
 	return final;
 }
+//Reference: Professor Kapoor's Slide's for BFS
 
 // Full BFS search, used for setting levels if needed
 void Graph::fullBFS(Person source, string p, string m, string n)
@@ -355,6 +356,7 @@ vector<vector<pair<Person, int>>> Graph::findFriendsDFS(Person source, string p,
 
 	return final;
 }
+//Reference: Professor Kapoor's Slide's for DFS
 
 // Used for printing the path and levels from the source, to the Persons with matching traits
 void Graph::printPath(Person source, Person dest)

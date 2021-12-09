@@ -14,11 +14,16 @@ typedef high_resolution_clock Clock;
 // We then use these traits to generate a list of friends that match them based on each trait individually,
 // Or a combination of the traits, showing a path between the User and the recommended friend
 
+// Usable example personalities for input:  Gracious, Tolerant, Elegant
+// Usable example music genre for input: House, Pop, Indie Rock
+// Usable example nationalities for input: American, French, British
+// All usable input inside the text files in the project file
+
 // Extra functions for consolodating the main
 
-void printer1(Graph network, Person src, vector<pair<Person, int>> fPers, vector<pair<Person, int>> fMusic,
+void matchPrintAL(Graph network, Person src, vector<pair<Person, int>> fPers, vector<pair<Person, int>> fMusic,
     vector<pair<Person, int>> fNation, vector<pair<Person, int>> fPM, vector<pair<Person, int>> fPN, vector<pair<Person, int>> fMN, vector<pair<Person, int>> fPMN);
-void printer2(GraphEL network, Person src, vector<pair<Person, int>> fPers, vector<pair<Person, int>> fMusic,
+void matchPrintEL(GraphEL network, Person src, vector<pair<Person, int>> fPers, vector<pair<Person, int>> fMusic,
     vector<pair<Person, int>> fNation, vector<pair<Person, int>> fPM, vector<pair<Person, int>> fPN, vector<pair<Person, int>> fMN, vector<pair<Person, int>> fPMN);
 void getStrings3(vector<string>& strings, string filePath);
 Person makeSource();
@@ -36,8 +41,8 @@ int main()
     {
 
         string in;
-        cout << "Choose Graph Representation:\n\n";  // First choose a graph representation
-        cout << "1. Adjacency List\n" << "2. Edge List\n\n";
+        cout << "Choose graph representation:\n\n";  // First choose a graph representation
+        cout << "1. Adjacency list\n" << "2. Edge list\n\n";
 
         getline(cin, in);
 
@@ -88,7 +93,7 @@ int main()
 
                 vector<pair<Person, int>> fPers = BFSAL1.at(0);
                 vector<pair<Person, int>> fMusic = BFSAL1.at(1);  // These are the vectors with the Person objects of the matching persons
-                vector<pair<Person, int>> fNation = BFSAL1.at(2);
+                vector<pair<Person, int>> fNation = BFSAL1.at(2); // And their respective level
                 vector<pair<Person, int>> fPM = BFSAL1.at(3);
                 vector<pair<Person, int>> fPN = BFSAL1.at(4);
                 vector<pair<Person, int>> fMN = BFSAL1.at(5);
@@ -97,13 +102,13 @@ int main()
                 bool cont = true;
                 while (cont)
                 {
-                    cout << "Recommend by: \n\n" << "1. My traits\n" << "2. Chosen Traits\n" << "\nOr...\n\n" << "3. Change to BFS/DFS\n" << "4. End Program\n\n";
+                    cout << "Recommend by: \n\n" << "1. My traits\n" << "2. Chosen traits\n" << "\nOr...\n\n" << "3. Change to BFS/DFS\n" << "4. End program\n\n";
                     string input1;
                     getline(cin, input1);    // Choose whether to recommend by your traits, new ones, or change search algorithm
 
                     if (input1 == "1")
                     {
-                        printer1(network, src, fPers, fMusic, fNation, fPM, fPN, fMN, fPMN);  // Prints recommended friends based on input
+                        matchPrintAL(network, src, fPers, fMusic, fNation, fPM, fPN, fMN, fPMN);  // Prints recommended friends based on input
                     }
                     else if (input1 == "2") // Now we are using new traits, and using BFS or DFS again to recommend friendships
                     {
@@ -127,7 +132,7 @@ int main()
                         vector<pair<Person, int>> fMN2 = BFSAL2.at(5);
                         vector<pair<Person, int>> fPMN2 = BFSAL2.at(6);
 
-                        printer1(network, src, fPers2, fMusic2, fNation2, fPM2, fPN2, fMN2, fPMN2);
+                        matchPrintAL(network, src, fPers2, fMusic2, fNation2, fPM2, fPN2, fMN2, fPMN2);
                     }
 
                     else if (input1 == "3")
@@ -155,13 +160,14 @@ int main()
         Person src = makeSource();
         cout << "Creating network...\n\n";
         GraphEL network2(1000, 5, src);         // Smaller size as to not waste time in showing the code
-        cout << "Matching friends...\n\n";   // Works at 100k vertices, takes about 4.5 minutes for BFS and DFS
+        cout << "Matching friends...\n\n";   // Works at 100k vertices, takes about 4 minutes for BFS and DFS
                                                  // Same structure in the main as the adjacency list 
 
+    
             vector<vector<pair<Person, int>>> BFS = network2.friendsBFS(src, src.getPersonality(), src.getMusic(), src.getNationality());
-       
+            
             vector<vector<pair<Person, int>>> DFS = network2.friendsDFS(src, src.getPersonality(), src.getMusic(), src.getNationality());
-         
+           
             bool cont6 = true;
 
             while (cont6)
@@ -201,13 +207,13 @@ int main()
                 bool cont = true;
                 while (cont)
                 {
-                    cout << "Recommend by: \n\n" << "1. My traits\n" << "2. Chosen Traits\n" << "\nOr...\n\n" << "3. Change to BFS/DFS\n" << "4. End program\n\n";
+                    cout << "Recommend by: \n\n" << "1. My traits\n" << "2. Chosen traits\n" << "\nOr...\n\n" << "3. Change to BFS/DFS\n" << "4. End program\n\n";
                     string input1;
                     getline(cin, input1);
 
                     if (input1 == "1")
                     {
-                        printer2(network2, src, fPers3, fMusic3, fNation3, fPM3, fPN3, fMN3, fPMN3);
+                        matchPrintEL(network2, src, fPers3, fMusic3, fNation3, fPM3, fPN3, fMN3, fPMN3);
                     }
 
                     else if (input1 == "2")
@@ -231,7 +237,7 @@ int main()
                         vector<pair<Person, int>> fMN4 = BFSEL2.at(5);
                         vector<pair<Person, int>> fPMN4 = BFSEL2.at(6);
 
-                        printer2(network2, src, fPers4, fMusic4, fNation4, fPM4, fPN4, fMN4, fPMN4);
+                        matchPrintEL(network2, src, fPers4, fMusic4, fNation4, fPM4, fPN4, fMN4, fPMN4);
                     }
 
                     else if (input1 == "3")
@@ -262,7 +268,7 @@ int main()
 
 
 
-void printer1(Graph network, Person src, vector<pair<Person, int>> fPers, vector<pair<Person, int>> fMusic,
+void matchPrintAL(Graph network, Person src, vector<pair<Person, int>> fPers, vector<pair<Person, int>> fMusic,
     vector<pair<Person, int>> fNation, vector<pair<Person, int>> fPM, vector<pair<Person, int>> fPN, vector<pair<Person, int>> fMN, vector<pair<Person, int>> fPMN)
 {
    
@@ -271,11 +277,11 @@ void printer1(Graph network, Person src, vector<pair<Person, int>> fPers, vector
         {
             string input2;
             cout << "Recommend by: \n\n" << "1. Personality\n" << "2. Music\n" << "3. Nationality\n"
-                << "4. Double Matches\n" << "5. Triple match\n" << "\n Or...\n\n" << "6. Change to my/chosen traits or BFS/DFS\n\n";
+                << "4. Double match\n" << "5. Triple match\n" << "\n Or...\n\n" << "6. Change to my/chosen traits or BFS/DFS or End program\n\n";
             getline(cin, input2);
             if (input2 == "1")
             {
-                cout << "Recommending by Personality: \n" << "Your closest matches are... \n\n";
+                cout << "Recommending by personality: \n" << "Your closest matches are... \n\n";
                 if (fPers.size() == 0)
                     cout << "No matches\n\n";
                 else
@@ -291,7 +297,7 @@ void printer1(Graph network, Person src, vector<pair<Person, int>> fPers, vector
             }
             else if (input2 == "2")
             {
-                cout << "Recommending by Music Genre: \n" << "Your closest matches are... \n\n";
+                cout << "Recommending by music genre: \n" << "Your closest matches are... \n\n";
                 for (int i = 0; i < 3; i++)
                 {
                     network.printPath(src, fMusic.at(i).first);
@@ -300,7 +306,7 @@ void printer1(Graph network, Person src, vector<pair<Person, int>> fPers, vector
             }
             else if (input2 == "3")
             {
-                cout << "Recommending by Nationality: \n" << "Your closest matches are... \n\n";
+                cout << "Recommending by nationality: \n" << "Your closest matches are... \n\n";
                 for (int i = 0; i < 3; i++)
                 {
                     network.printPath(src, fNation.at(i).first);
@@ -347,7 +353,7 @@ void printer1(Graph network, Person src, vector<pair<Person, int>> fPers, vector
             }
         }
     }
-void printer2(GraphEL network, Person src, vector<pair<Person, int>> fPers, vector<pair<Person, int>> fMusic,
+void matchPrintEL(GraphEL network, Person src, vector<pair<Person, int>> fPers, vector<pair<Person, int>> fMusic,
     vector<pair<Person, int>> fNation, vector<pair<Person, int>> fPM, vector<pair<Person, int>> fPN, vector<pair<Person, int>> fMN, vector<pair<Person, int>> fPMN)
 {
 
@@ -356,11 +362,11 @@ void printer2(GraphEL network, Person src, vector<pair<Person, int>> fPers, vect
     {
         string input2;
         cout << "Recommend by: \n\n" << "1. Personality\n" << "2. Music\n" << "3. Nationality\n"
-            << "4. Double Matches\n" << "5. Triple match\n" << "\nOr...\n\n" "6. Change to my/chosen traits or BFS/DFS\n\n";
+            << "4. Double match\n" << "5. Triple match\n" << "\nOr...\n\n" "6. Change to my/chosen traits or BFS/DFS or End program\n\n";
         getline(cin, input2);
         if (input2 == "1")
         {
-            cout << "Recommending by Personality: \n" << "Your closest matches are... \n\n";
+            cout << "Recommending by personality: \n" << "Your closest matches are... \n\n";
             if (fPers.size() == 0)
                 cout << "No matches\n\n";
             else
@@ -376,7 +382,7 @@ void printer2(GraphEL network, Person src, vector<pair<Person, int>> fPers, vect
         }
         else if (input2 == "2")
         {
-            cout << "Recommending by Music Genre: \n" << "Your closest matches are... \n\n";
+            cout << "Recommending by music genre: \n" << "Your closest matches are... \n\n";
             for (int i = 0; i < 3; i++)
             {
                 network.printPath(src, fMusic.at(i).first);
@@ -385,7 +391,7 @@ void printer2(GraphEL network, Person src, vector<pair<Person, int>> fPers, vect
         }
         else if (input2 == "3")
         {
-            cout << "Recommending by Nationality: \n" << "Your closest matches are... \n\n";
+            cout << "Recommending by nationality: \n" << "Your closest matches are... \n\n";
             for (int i = 0; i < 3; i++)
             {
                 network.printPath(src, fNation.at(i).first);

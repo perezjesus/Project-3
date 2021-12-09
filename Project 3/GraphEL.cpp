@@ -217,6 +217,7 @@ vector<vector<pair<Person, int>>> GraphEL::friendsBFS(Person source, string p, s
 
 	return final;
 }
+//Reference: Professor Kapoor's Slide's for BFS
 
 // Main search algorithm: DFS
 vector<vector<pair<Person, int>>> GraphEL::friendsDFS(Person source, string p, string m, string n)
@@ -307,7 +308,8 @@ vector<vector<pair<Person, int>>> GraphEL::friendsDFS(Person source, string p, s
 
 	return final;
 }
-
+//Reference: Professor Kapoor's Slide's for DFS
+// 
 // Same use as the adjacency list
 void GraphEL::printPath(Person source, Person dest)
 {

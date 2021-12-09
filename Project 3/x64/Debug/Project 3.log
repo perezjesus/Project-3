@@ -1,1 +1,4 @@
-﻿  Project 3.vcxproj -> C:\Users\Jesus Perez\es-ES\Downloads\Project 3\x64\Debug\Project 3.exe
+﻿  main.cpp
+C:\Users\Jesus Perez\es-ES\Downloads\Project 3\Project 3\main.cpp(336,38): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Jesus Perez\es-ES\Downloads\Project 3\Project 3\main.cpp(435,34): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+  Project 3.vcxproj -> C:\Users\Jesus Perez\es-ES\Downloads\Project 3\x64\Debug\Project 3.exe
