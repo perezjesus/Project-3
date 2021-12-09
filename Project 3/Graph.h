@@ -2,7 +2,6 @@
 #include "GraphEL.h"
 #include "Person.h"
 
-
 class Graph
 {
 
@@ -23,7 +22,7 @@ public:
 	vector<vector<pair<Person, int>>> findFriendsBFS(Person source, string p, string m, string n);
 	vector<vector<pair<Person, int>>> findFriendsDFS(Person source, string p, string m, string n);
 	void printPath(Person source, Person dest);
-
+	
 };
 
 

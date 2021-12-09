@@ -27,6 +27,8 @@ void getStrings(vector<string>& strings, string filePath)
 		}
 	}
 }
+
+
 vector<Person> randomPersons(int size)
 {
 	vector<Person> persons;

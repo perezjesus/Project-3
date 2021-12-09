@@ -265,6 +265,7 @@ vector<vector<pair<Person, int>>> GraphEL::friendsDFS(Person source, string p, s
 								if (friendPMN.size() == 3)
 								{
 									clear2S(q);
+									break;
 								}
 							}
 						}
