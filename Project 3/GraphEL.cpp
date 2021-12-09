@@ -218,6 +218,13 @@ vector<vector<pair<Person, int>>> GraphEL::friendsDFS(Person source, string p, s
 	visited.insert(source);
 	q.push(source);
 
+	set<Person> adjacent;
+	for (int i = 0; i < graph.size(); i++)
+	{
+		if (graph.at(i).first == source)
+			adjacent.insert(graph.at(i).second);
+	}
+
 	string srcPers = p;
 	string srcMusic = m;
 	string srcNation = n;
@@ -244,7 +251,7 @@ vector<vector<pair<Person, int>>> GraphEL::friendsDFS(Person source, string p, s
 			{
 				Person v = graph.at(i).second;
 				int level = v.getLevel();
-				if (level != 0)
+				if (adjacent.count(v) == 0)
 				{
 					if (v.getPersonality() == srcPers)
 					{
@@ -336,10 +343,11 @@ void GraphEL::printPath(Person source, Person dest)
 	}
 	print.push_back(p.getName());
 	reverse(print.begin(), print.end());
-	cout << "You -> ";
-	for (int i = 1; i < print.size()-1; i++)
+	cout << dest.getName() << ", " << print.size() - 2 << " levels away!\n";
+	cout << "Path: You -> ";
+	for (int i = 1; i < print.size() - 1; i++)
 	{
 		cout << print.at(i) << " -> ";
 	}
-	cout << print.at(print.size()-1);
+	cout << print.at(print.size() - 1);
 }

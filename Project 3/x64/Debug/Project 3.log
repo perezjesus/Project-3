@@ -1,6 +1,10 @@
-﻿  main.cpp
-C:\Users\Jesus Perez\es-ES\Downloads\Project 3\Project 3\main.cpp(154,46): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\Jesus Perez\es-ES\Downloads\Project 3\Project 3\main.cpp(259,47): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\Jesus Perez\es-ES\Downloads\Project 3\Project 3\main.cpp(426,51): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\Jesus Perez\es-ES\Downloads\Project 3\Project 3\main.cpp(553,51): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+﻿  GraphEL.cpp
+C:\Users\Jesus Perez\es-ES\Downloads\Project 3\Project 3\GraphEL.cpp(14,35): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+C:\Users\Jesus Perez\es-ES\Downloads\Project 3\Project 3\GraphEL.cpp(43,48): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Jesus Perez\es-ES\Downloads\Project 3\Project 3\GraphEL.cpp(45,54): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Jesus Perez\es-ES\Downloads\Project 3\Project 3\GraphEL.cpp(47,48): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Jesus Perez\es-ES\Downloads\Project 3\Project 3\GraphEL.cpp(49,57): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Jesus Perez\es-ES\Downloads\Project 3\Project 3\GraphEL.cpp(122,19): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Jesus Perez\es-ES\Downloads\Project 3\Project 3\GraphEL.cpp(200,19): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Jesus Perez\es-ES\Downloads\Project 3\Project 3\GraphEL.cpp(125): warning C4715: 'GraphEL::getLevelEL': not all control paths return a value
   Project 3.vcxproj -> C:\Users\Jesus Perez\es-ES\Downloads\Project 3\x64\Debug\Project 3.exe

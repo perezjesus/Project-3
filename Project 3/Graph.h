@@ -16,7 +16,7 @@ public:
 	 
 	Graph();
 	Graph(int size, int numFriends, Person source);
-
+	void fullBFS(Person source, string p, string m, string n);
 	void insertEdge(Person from, Person to);
 	set<Person> getAdjacent(Person vertex);
 	int getLevel(Person x, Person src);

@@ -32,9 +32,9 @@ int Person::getLevel()
 {
     return level;
 }
-void Person::setLevel(int l)
+void Person::setLevel(int level)
 {
-    level = l;
+    this->level = level;
 }
 void Person::printInfo() 
 {
