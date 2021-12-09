@@ -12,6 +12,8 @@
 
 using namespace std;
 
+// Person objects, used as vertices in the graph
+
 class Person
 {
 
@@ -36,7 +38,6 @@ public:
 	
 	void printInfo();
 	Person() {
-
 	}
 	Person(string name, string personality, string music, string nationality, int id);
 

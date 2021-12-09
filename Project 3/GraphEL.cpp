@@ -1,5 +1,7 @@
 #include "GraphEL.h"
 
+// Random class used for creating random Person objects
+
 class Random2
 {
 
@@ -53,6 +55,8 @@ vector<Person> random2Persons(int size)
 	return persons;
 }
 
+// Clearing queue and stack
+
 void clear2(queue<Person>& q2)
 {
 	queue<Person> empty;
@@ -64,13 +68,13 @@ void clear2S(stack<Person>& s2)
 	swap(s2, empty);
 }
 
-
+// Edge list constructor
 GraphEL::GraphEL(int size, int numFriends, Person source)
 {
 	vector<Person> people;
 	Random2 rand;
-	people = random2Persons(size);
-
+	people = random2Persons(size);  // random2Persons creates a vector of randomly created 
+									// Person objects for use in constructing edge list			
 	for (int i = 0; i < people.size(); i++)
 	{
 		for (int u = 0; u < numFriends; u++)
@@ -78,18 +82,20 @@ GraphEL::GraphEL(int size, int numFriends, Person source)
 			int r = rand.RandInt(0, size - 1);
 			if (r != i)
 			{
-				insertEdge(people.at(i), people.at(r));
-			}
+				insertEdge(people.at(i), people.at(r)); // Inserting random connections for each vertex 
+			}											// in the graph
 		}
 
 	}
-	people.at(0) = source;
+	people.at(0) = source;   // Sets the first person as the source
 }
 void GraphEL::insertEdge(Person from, Person to)
 {
-	graph.push_back({ from, to });
+	graph.push_back({ from, to });  // Insertion
 }
 
+
+//Returns the level of a vertex 
 int GraphEL::getLevelEL(Person x, Person source)
 {
 	set<Person> visited;
@@ -124,12 +130,13 @@ int GraphEL::getLevelEL(Person x, Person source)
 	}
 }
 
+// Main search algorithm: BFS
 vector<vector<pair<Person, int>>> GraphEL::friendsBFS(Person source, string p, string m, string n)
 {
 	set<Person> visited;
-	queue<Person> q;
-	visited.insert(source);
-	q.push(source);
+	queue<Person> q;        // Same structure as the adjacency list
+	visited.insert(source); // Look for desired traits in the graph using BFS traversal 
+	q.push(source);			// Push matching Person objects into their respective vectors
 
 	string srcPers = p;
 	string srcMusic = m;
@@ -152,12 +159,12 @@ vector<vector<pair<Person, int>>> GraphEL::friendsBFS(Person source, string p, s
 		Person u = q.front();
 		q.pop();
 		size--;
-		for (int i = 0; i < graph.size(); i++)
+		for (int i = 0; i < graph.size(); i++)  // iterate through entire edge list to find adjacent vertexes
 		{
-			if (graph.at(i).first == u && visited.count(graph.at(i).second) == 0)
-			{
+			if (graph.at(i).first == u && visited.count(graph.at(i).second) == 0) // Checks if visited already
+			{	
 				Person v = graph.at(i).second;
-				if (level != 0)
+				if (level != 0)   // Ensures you are not being recommended a friend that is already your friend
 				{
 					if (v.getPersonality() == srcPers)
 					{
@@ -211,9 +218,10 @@ vector<vector<pair<Person, int>>> GraphEL::friendsBFS(Person source, string p, s
 	return final;
 }
 
+// Main search algorithm: DFS
 vector<vector<pair<Person, int>>> GraphEL::friendsDFS(Person source, string p, string m, string n)
 {
-	set<Person> visited;
+	set<Person> visited;		// Same structure as DFS
 	stack<Person> q;
 	visited.insert(source);
 	q.push(source);
@@ -300,6 +308,7 @@ vector<vector<pair<Person, int>>> GraphEL::friendsDFS(Person source, string p, s
 	return final;
 }
 
+// Same use as the adjacency list
 void GraphEL::printPath(Person source, Person dest)
 {
 

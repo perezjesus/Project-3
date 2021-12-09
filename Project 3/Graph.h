@@ -4,11 +4,11 @@
 
 class Graph
 {
-
+	// Adjacency list representation
 private:
 
-	map<Person, set<Person>> graph;
-	int _size;
+	map<Person, set<Person>> graph; // Map of Person objects as keys, and the list
+	int _size;						// of adjacent vertices as a set of Person objects
 	int _numFriends;
 
 public:
@@ -19,9 +19,9 @@ public:
 	void insertEdge(Person from, Person to);
 	set<Person> getAdjacent(Person vertex);
 	int getLevel(Person x, Person src);
-	vector<vector<pair<Person, int>>> findFriendsBFS(Person source, string p, string m, string n);
-	vector<vector<pair<Person, int>>> findFriendsDFS(Person source, string p, string m, string n);
-	void printPath(Person source, Person dest);
+	vector<vector<pair<Person, int>>> findFriendsBFS(Person source, string p, string m, string n);	// BFS search
+	vector<vector<pair<Person, int>>> findFriendsDFS(Person source, string p, string m, string n);	// DFS search
+	void printPath(Person source, Person dest); // Used for printing the path from source to a specified Person vertex
 	
 };
 

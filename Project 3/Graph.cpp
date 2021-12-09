@@ -1,5 +1,8 @@
 #include "Graph.h"
 
+// Random class used for utitilizing text files of names, personalities, music genres
+// and nationalities, to randomize Person objects 
+
 class Random
 {
 
@@ -28,7 +31,6 @@ void getStrings(vector<string>& strings, string filePath)
 	}
 }
 
-
 vector<Person> randomPersons(int size)
 {
 	vector<Person> persons;
@@ -55,6 +57,8 @@ vector<Person> randomPersons(int size)
 	return persons;
 }
 
+// Clearing queue and stack
+
 void clear(queue<Person>& q2)
 {
 	queue<Person> empty;
@@ -66,12 +70,13 @@ void clearS(stack<Person>& s2)
 	swap(s2, empty);
 }
 
+// Graph adjacency list constructor
 Graph::Graph(int size, int numFriends, Person source)
 {
-	vector<Person> people;
+	vector<Person> people;  // Takes in a size and number of friends to connect
 	Random rand;
-	people = randomPersons(size);
-
+	people = randomPersons(size);   // randomPersons randomizes and creates a vector of person objects
+									// For use in inserting into the adjacency list
 	for (int i = 0; i < people.size(); i++)
 	{
 		for (int u = 0; u < numFriends; u++)
@@ -84,7 +89,7 @@ Graph::Graph(int size, int numFriends, Person source)
 		}
 
 	}
-	people.at(0) = source;
+	people.at(0) = source;   // Assigns the first Person in the people vector as our source 
 }
 
 void Graph::insertEdge(Person from, Person to)
@@ -130,10 +135,12 @@ int Graph::getLevel(Person x, Person src)
 	}
 }
 
+
+// Main search algorithm: BFS
 vector<vector<pair<Person, int>>> Graph::findFriendsBFS(Person source, string p, string m, string n)
 {
 	set<Person> visited;
-	queue<Person> q;
+	queue<Person> q;        // Takes in a source person and strings of traits to look for in the graph
 	visited.insert(source);
 	q.push(source);
 
@@ -141,12 +148,12 @@ vector<vector<pair<Person, int>>> Graph::findFriendsBFS(Person source, string p,
 	string srcMusic = m;
 	string srcNation = n;
 
-	vector<pair<Person, int>> friend1;
-	vector<pair<Person, int>> friend2;
+	vector<pair<Person, int>> friend1;	
+	vector<pair<Person, int>> friend2;  // Vectors that will take in connections for each trait, and combinations
 	vector<pair<Person, int>> friend3;
-	vector<pair<Person, int>> friendPM;
-	vector<pair<Person, int>> friendPN;
-	vector<pair<Person, int>> friendMN;
+	vector<pair<Person, int>> friendPM; // friendPM = friends matching Personality + Music
+	vector<pair<Person, int>> friendPN;	// friendPN = friends matching Personality + Nationality								
+	vector<pair<Person, int>> friendMN; // etc.
 	vector<pair<Person, int>> friendPMN;
 	vector<vector<pair<Person, int>>> final;
 
@@ -164,8 +171,8 @@ vector<vector<pair<Person, int>>> Graph::findFriendsBFS(Person source, string p,
 		{
 			if (visited.count(v) == 0)
 			{
-				if (level != 0)
-				{
+				if (level != 0)    // Here the visited Person vertex's traits are compared with the traits we are looking for
+				{					// If the traits are the same, they are pushed in there respective vector
 					if (v.getPersonality() == srcPers)
 					{
 						friend1.push_back({ v, level});
@@ -175,8 +182,8 @@ vector<vector<pair<Person, int>>> Graph::findFriendsBFS(Person source, string p,
 							if (v.getNationality() == srcNation)
 							{
 								friendPMN.push_back({ v, level });
-								if (friendPMN.size() == 3)
-								{
+								if (friendPMN.size() == 3)    // The BFS is broken if there are 3 Person objects found with 
+								{								// 3 matching traits
 									clear(q);
 									break;
 								}
@@ -214,13 +221,14 @@ vector<vector<pair<Person, int>>> Graph::findFriendsBFS(Person source, string p,
 	final.push_back(friend2);
 	final.push_back(friend3);
 	final.push_back(friendPM);
-	final.push_back(friendPN);
+	final.push_back(friendPN);  // Push and return all vectors containing matching Person objects
 	final.push_back(friendMN);
 	final.push_back(friendPMN);
 
 	return final;
 }
 
+// Full BFS search, used for setting levels if needed
 void Graph::fullBFS(Person source, string p, string m, string n)
 {
 	set<Person> visited;
@@ -259,9 +267,10 @@ void Graph::fullBFS(Person source, string p, string m, string n)
 
 }
 
+// Second main search algorithm: DFS
 vector<vector<pair<Person, int>>> Graph::findFriendsDFS(Person source, string p, string m, string n)
 {
-	set<Person> visited;
+	set<Person> visited;    // Same structure as the BFS algorithm, except changed into DFS
 	stack<Person> s;
 	visited.insert(source);
 	s.push(source);
@@ -347,6 +356,7 @@ vector<vector<pair<Person, int>>> Graph::findFriendsDFS(Person source, string p,
 	return final;
 }
 
+// Used for printing the path and levels from the source, to the Persons with matching traits
 void Graph::printPath(Person source, Person dest)
 {
 	set<Person> visited;
@@ -366,8 +376,8 @@ void Graph::printPath(Person source, Person dest)
 			if (visited.count(v) == 0)
 			{
 				
-				m[v] = u;
-				if (v == dest)
+				m[v] = u;			// Regular BFS, but it stores the parent vertexes
+				if (v == dest)		// Stops when it finds the destination person
 				{
 					clear(q);
 					break;
@@ -384,14 +394,14 @@ void Graph::printPath(Person source, Person dest)
 	Person p = dest;
 	
 	vector<string> print;
-	while (p != source)
+	while (p != source)			
 	{
 		print.push_back(p.getName());
 		p = m[p];
 		
 	}
 	print.push_back(p.getName());
-	reverse(print.begin(), print.end());
+	reverse(print.begin(), print.end());  // Printing path from source to Person object with desired traits
 	cout << dest.getName() << ", " << print.size() - 2 << " levels away!\n";
 	cout << "Path: You -> ";
 	for (int i = 1; i < print.size()-1; i++)

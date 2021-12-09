@@ -142,14 +142,12 @@
     <ClInclude Include="Graph.h" />
     <ClInclude Include="GraphEL.h" />
     <ClInclude Include="Person.h" />
-    <ClInclude Include="randoms.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Graph.cpp" />
     <ClCompile Include="GraphEL.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Person.cpp" />
-    <ClCompile Include="randoms.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

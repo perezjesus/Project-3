@@ -2,9 +2,24 @@
 #include "Graph.h"
 #include <ctime>
 #include <chrono>
+
 using namespace std::chrono;
 typedef high_resolution_clock Clock;
 
+// Overall function of the program:
+// User inputs their own personality, music genre and nationality traits
+// We create an directed and unweighted adjacency list or edge list, with randomly generated Person objects and random friend connections
+// We then do a BFS or DFS search through the graph, using the users Person object as the source
+// We look for either the user's own traits or, give them the option of creating new traits to recommend by
+// We then use these traits to generate a list of friends that match them based on each trait individually,
+// Or a combination of the traits, showing a path between the User and the recommended friend
+
+// Extra functions for consolodating the main
+
+void printer1(Graph network, Person src, vector<pair<Person, int>> fPers, vector<pair<Person, int>> fMusic,
+    vector<pair<Person, int>> fNation, vector<pair<Person, int>> fPM, vector<pair<Person, int>> fPN, vector<pair<Person, int>> fMN, vector<pair<Person, int>> fPMN);
+void printer2(GraphEL network, Person src, vector<pair<Person, int>> fPers, vector<pair<Person, int>> fMusic,
+    vector<pair<Person, int>> fNation, vector<pair<Person, int>> fPM, vector<pair<Person, int>> fPN, vector<pair<Person, int>> fMN, vector<pair<Person, int>> fPMN);
 void getStrings3(vector<string>& strings, string filePath);
 Person makeSource();
 Person makeSource2();
@@ -15,29 +30,34 @@ bool checkValidN(string nationality);
 int main()
 {
 
-    bool cont7 = true;
+    bool cont1 = true;
 
-    while (cont7)
+    while (cont1)
     {
 
         string in;
-        cout << "Choose Graph Representation:\n\n";
-        cout << "1. Adj List\n" << "2. Edge List\n\n";
+        cout << "Choose Graph Representation:\n\n";  // First choose a graph representation
+        cout << "1. Adjacency List\n" << "2. Edge List\n\n";
 
         getline(cin, in);
 
      
-        if (in == "1")
+        if (in == "1") // Adjacency List
         {
 
-            cout << "Welcome to the Friendship Recommender!\n\n";
+            cout << "Welcome to the Friendship Recommender!\n" << "-------------------------------------\n\n";
+            Person src = makeSource();  // Source creation using inputted name and traits
 
-            Person src = makeSource();
+            cout << "Creating network...\n\n";
 
-            Graph network(10000, 5, src);
+            Graph network(100000, 5, src); // Adjacency list creation with the source inserted 
+
+            cout << "Matching friends...\n\n";
 
             vector<vector<pair<Person, int>>> BFS = network.findFriendsBFS(src, src.getPersonality(), src.getMusic(), src.getNationality());
             vector<vector<pair<Person, int>>> DFS = network.findFriendsDFS(src, src.getPersonality(), src.getMusic(), src.getNationality());
+            
+            // BFS and DFS are done to find the friends which matches the sources own traits 
 
             bool cont5 = true;
 
@@ -46,7 +66,7 @@ int main()
 
                 string searchInput;
 
-                cout << "Choose search method:\n\n" << "1. BFS\n" << "2. DFS\n\n";
+                cout << "Choose search method:\n\n" << "1. BFS\n" << "2. DFS\n\n"; // Choose BFS or DFS
 
                 getline(cin, searchInput);
 
@@ -67,7 +87,7 @@ int main()
                 }
 
                 vector<pair<Person, int>> fPers = BFSAL1.at(0);
-                vector<pair<Person, int>> fMusic = BFSAL1.at(1);
+                vector<pair<Person, int>> fMusic = BFSAL1.at(1);  // These are the vectors with the Person objects of the matching persons
                 vector<pair<Person, int>> fNation = BFSAL1.at(2);
                 vector<pair<Person, int>> fPM = BFSAL1.at(3);
                 vector<pair<Person, int>> fPN = BFSAL1.at(4);
@@ -77,100 +97,22 @@ int main()
                 bool cont = true;
                 while (cont)
                 {
-                    cout << "Recommend by: \n" << "1. My traits\n" << "2. Chosen Traits\n" << "3. Change to BFS/DFS\n" << "4. End Program\n\n";
+                    cout << "Recommend by: \n\n" << "1. My traits\n" << "2. Chosen Traits\n" << "\nOr...\n\n" << "3. Change to BFS/DFS\n" << "4. End Program\n\n";
                     string input1;
-                    getline(cin, input1);
+                    getline(cin, input1);    // Choose whether to recommend by your traits, new ones, or change search algorithm
 
                     if (input1 == "1")
                     {
-                        bool cont2 = true;
-                        while (cont2)
-                        {
-                            string input2;
-                            cout << "Recommend by: \n" << "1. Personality\n" << "2. Music\n" << "3. Nationality\n"
-                                << "4. Double Matches\n" << "5. Triple match\n" << "6. Change to my/chosen traits or BFS/DFS\n\n";
-                            getline(cin, input2);
-                            if (input2 == "1")
-                            {
-                                cout << "Recommending by Personality: \n" << "Your closest matches are... \n\n";
-                                if (fPers.size() == 0)
-                                    cout << "No matches\n\n";
-                                else
-
-                                {
-                                    for (int i = 0; i < 3; i++)
-                                    {
-                                        network.printPath(src, fPers.at(i).first);
-                                        cout << "\n\n";
-                                    }
-                                }
-                            
-                            }
-                            else if (input2 == "2")
-                            {
-                                cout << "Recommending by Music Genre: \n" << "Your closest matches are... \n\n";
-                                for (int i = 0; i < 3; i++)
-                                {
-                                    network.printPath(src, fMusic.at(i).first);
-                                    cout << "\n\n";
-                                }
-                            }
-                            else if (input2 == "3")
-                            {
-                                cout << "Recommending by Nationality: \n" << "Your closest matches are... \n\n";
-                                for (int i = 0; i < 3; i++)
-                                {
-                                    network.printPath(src, fNation.at(i).first);
-                                    cout << "\n\n";
-                                }
-                            }
-                            else if (input2 == "4")
-                            {
-                                cout << "Showing double matches: \n"
-                                    << "Personality + Music: ";
-                                network.printPath(src, fPM.at(0).first);
-                                cout << "\n\n";
-                                cout << "Personality + Nationality: ";
-                                network.printPath(src, fPN.at(0).first);
-                                cout << "\n\n";
-                                cout << "Music + Nationality: ";
-                                network.printPath(src, fMN.at(0).first);
-                                cout << "\n\n";
-                            }
-                            else if (input2 == "5")
-                            {
-                                cout << "Showing triple matches: \n";
-                                int max = 3;
-                                if (fPMN.size() == 0)
-                                    cout << "No matches\n\n";
-                                if (fPMN.size() < 3)
-                                    max = fPMN.size();
-                                for (int i = 0; i < max; i++)
-                                {
-                                    network.printPath(src, fPMN.at(i).first);
-                                    cout << "\n\n";
-                                }
-                                cout << endl;
-                            }
-                            else if (input2 == "6")
-                            {
-                                cont2 = false;
-                                continue;
-                            }
-                            else
-                            {
-                                cout << "Options are \"1\", \"2\", \"3\", \"4\", \"5\", and \"6\"\n\n";
-                                continue;
-                            }
-
-                        }
+                        printer1(network, src, fPers, fMusic, fNation, fPM, fPN, fMN, fPMN);  // Prints recommended friends based on input
                     }
-                    else if (input1 == "2")
+                    else if (input1 == "2") // Now we are using new traits, and using BFS or DFS again to recommend friendships
                     {
                         
                         Person target = makeSource2();
 
-                        vector<vector<pair<Person, int>>> BFSAL2(7);
+                        vector<vector<pair<Person, int>>> BFSAL2(7);  // Create new list of vectors with the inputted traits
+
+                        cout << "Matching friends with new traits...\n\n";
 
                         if (searchInput == "1")
                             BFSAL2 = network.findFriendsBFS(src, target.getPersonality(), target.getMusic(), target.getNationality());
@@ -185,76 +127,7 @@ int main()
                         vector<pair<Person, int>> fMN2 = BFSAL2.at(5);
                         vector<pair<Person, int>> fPMN2 = BFSAL2.at(6);
 
-                        bool cont2 = true;
-                        while (cont2)
-                        {
-                            string input2;
-                            cout << "Recommend by: \n" << "1. Personality\n" << "2. Music\n" << "3. Nationality\n"
-                                << "4. Double Matches\n" << "5. Triple match\n" << "6. Change to my/chosen traits or BFS/DFS\n\n";
-                            getline(cin, input2);
-                            if (input2 == "1")
-                            {
-                                cout << "Recommending by Personality: \n" << "Your closest matches are... \n\n";
-                                for (int i = 0; i < 3; i++)
-                                {
-                                    network.printPath(src, fPers2.at(i).first);
-                                    cout << "\n\n";
-                                }
-                            }
-                            else if (input2 == "2")
-                            {
-                                cout << "Recommending by Music Genre: \n" << "Your closest matches are... \n\n";
-                                for (int i = 0; i < 3; i++)
-                                {
-                                    network.printPath(src, fMusic2.at(i).first);
-                                    cout << "\n\n";
-                                }
-                            }
-                            else if (input2 == "3")
-                            {
-                                cout << "Recommending by Nationality: \n" << "Your closest matches are... \n\n";
-                                for (int i = 0; i < 3; i++)
-                                {
-                                    network.printPath(src, fNation2.at(i).first);
-                                    cout << "\n\n";
-                                }
-                            }
-                            else if (input2 == "4")
-                            {
-                                cout << "Showing double matches: \n"
-                                    << "Personality + Music: ";
-                                network.printPath(src, fPM2.at(0).first);
-                                cout << "\n\n";
-                                cout << "Personality + Nationality: ";
-                                network.printPath(src, fPN2.at(0).first);
-                                cout << "\n\n";
-                                cout << "Music + Nationality: ";
-                                network.printPath(src, fMN2.at(0).first);
-                                cout << "\n\n";
-                            }
-                            else if (input2 == "5")
-                            {
-                                cout << "Showing triple matches: \n";
-                                int max = 3;
-                                if (fPMN2.size() == 0)
-                                    cout << "No matches\n\n";
-                                if (fPMN2.size() < 3)
-                                    max = fPMN2.size();
-                                for (int i = 0; i < max; i++)
-                                {
-                                    network.printPath(src, fPMN2.at(i).first);
-                                    cout << "\n\n";
-                                }
-                                cout << endl;
-                            }
-                            else if (input2 == "6")
-                                cont2 = false;
-                            else
-                            {
-                                cout << "Options are \"1\", \"2\", \"3\", \"4\", \"5\", and \"6\"\n\n";
-                                continue;
-                            }
-                        }
+                        printer1(network, src, fPers2, fMusic2, fNation2, fPM2, fPN2, fMN2, fPMN2);
                     }
 
                     else if (input1 == "3")
@@ -263,43 +136,32 @@ int main()
                     {
                         cont = false;
                         cont5 = false;
-                        cont7 = false;
+                        cont1 = false;
                     }
                     else
                     {
                         cout << "Options are \"1\", \"2\", \"3\" and \"4\" \n\n";
                         continue;
                     }
-
-
                 }
             }
 
         }
 
-        else if (in == "2")
+        else if (in == "2") // Edge list representation
         {
-        cout << "Welcome to the Friendship Recommender!\n\n";
+        cout << "Welcome to the Friendship Recommender!\n\n" << "-------------------------------------\n\n";
 
         Person src = makeSource();
+        cout << "Creating network...\n\n";
+        GraphEL network2(1000, 5, src);         // Smaller size as to not waste time in showing the code
+        cout << "Matching friends...\n\n";   // Works at 100k vertices, takes about 4.5 minutes for BFS and DFS
+                                                 // Same structure in the main as the adjacency list 
 
-            auto begin = Clock::now();
-
-            GraphEL network2(10000, 5, src);
-            auto end = Clock::now();
-            auto time = (double)chrono::duration_cast<chrono::nanoseconds>(end - begin).count() / (1000000000);
-            cout << "Network EL: " << time << " seconds\n\n";
-
-            begin = Clock::now();
             vector<vector<pair<Person, int>>> BFS = network2.friendsBFS(src, src.getPersonality(), src.getMusic(), src.getNationality());
-            end = Clock::now();
-            time = (double)chrono::duration_cast<chrono::nanoseconds>(end - begin).count() / (1000000000);
-            cout << "BFS EL: " << time << " seconds\n\n";
-            begin = Clock::now();
+       
             vector<vector<pair<Person, int>>> DFS = network2.friendsDFS(src, src.getPersonality(), src.getMusic(), src.getNationality());
-            end = Clock::now();
-            time = (double)chrono::duration_cast<chrono::nanoseconds>(end - begin).count() / (1000000000);
-            cout << "DFS EL: " << time << " seconds\n\n";
+         
             bool cont6 = true;
 
             while (cont6)
@@ -312,7 +174,6 @@ int main()
                 cout << "1. BFS\n" << "2. DFS\n\n";
 
                 getline(cin, searchInput);
-
 
 
                 if (searchInput == "1")
@@ -340,96 +201,13 @@ int main()
                 bool cont = true;
                 while (cont)
                 {
-                    cout << "Recommend by: \n" << "1. My traits\n" << "2. Chosen Traits\n" << "3. Change to BFS/DFS\n" << "4. End program\n\n";
+                    cout << "Recommend by: \n\n" << "1. My traits\n" << "2. Chosen Traits\n" << "\nOr...\n\n" << "3. Change to BFS/DFS\n" << "4. End program\n\n";
                     string input1;
                     getline(cin, input1);
 
                     if (input1 == "1")
                     {
-                        bool cont2 = true;
-                        while (cont2)
-                        {
-                            string input2;
-                            cout << "Recommend by: \n" << "1. Personality\n" << "2. Music\n" << "3. Nationality\n"
-                                << "4. Double Matches\n" << "5. Triple match\n" << "6. Change to my/chosen traits or BFS/DFS\n\n";
-                            getline(cin, input2);
-                            if (input2 == "1")
-                            {
-                                cout << "Recommending by Personality: \n" << "Your closest matches are... \n\n";
-                                for (int i = 0; i < 3; i++)
-                                {
-                                    network2.printPath(src, fPers3.at(i).first);
-                                    cout << "\n\n";
-                                }
-                            }
-                            else if (input2 == "2")
-                            {
-                                cout << "Recommending by Music Genre: \n" << "Your closest matches are... \n\n";
-                                for (int i = 0; i < 3; i++)
-                                {
-                                    network2.printPath(src, fMusic3.at(i).first);
-                                    cout << "\n\n";
-                                }
-                            }
-                            else if (input2 == "3")
-                            {
-                                cout << "Recommending by Nationality: \n" << "Your closest matches are... \n\n";
-                                for (int i = 0; i < 3; i++)
-                                {
-                                    network2.printPath(src, fNation3.at(i).first);
-                                    cout << "\n\n";
-                                }
-                            }
-                            else if (input2 == "4")
-                            {
-                                cout << "Showing double matches: \n"
-                                    << "Personality + Music: ";
-                                if (fPM3.size() == 0)
-                                    cout << "No matches\n\n";
-                                else {
-                                    network2.printPath(src, fPM3.at(0).first);
-                                    cout << "\n\n";
-                                }
-                                cout << "Personality + Nationality: ";
-                                if (fPN3.size() == 0)
-                                    cout << "No matches\n\n";
-                                else
-                                {
-                                    network2.printPath(src, fPN3.at(0).first);
-                                    cout << "\n\n";
-                                }
-                                cout << "Music + Nationality: ";
-                                if (fMN3.size() == 0)
-                                    cout << "No matches\n\n";
-                                else
-                                {
-                                    network2.printPath(src, fMN3.at(0).first);
-                                    cout << "\n\n";
-                                }
-                            }
-                            else if (input2 == "5")
-                            {
-                                cout << "Showing triple matches: \n";
-                                int max = 3;
-                                if (fPMN3.size() == 0)
-                                    cout << "No matches\n\n";
-                                if (fPMN3.size() < 3)
-                                    max = fPMN3.size();
-                                for (int i = 0; i < max; i++)
-                                {
-                                    network2.printPath(src, fPMN3.at(i).first);
-                                    cout << "\n\n";
-                                }
-                                cout << endl;
-                            }
-                            else if (input2 == "6")
-                                cont2 = false;
-                            else
-                            {
-                                cout << "Options are \"1\", \"2\", \"3\", \"4\", \"5\", and \"6\"\n\n";
-                                continue;
-                            }
-                        }
+                        printer2(network2, src, fPers3, fMusic3, fNation3, fPM3, fPN3, fMN3, fPMN3);
                     }
 
                     else if (input1 == "2")
@@ -437,6 +215,8 @@ int main()
                         Person target = makeSource2();
 
                         vector<vector<pair<Person, int>>> BFSEL2;
+
+                        cout << "Matching friends with new traits...\n\n";
 
                         if (searchInput == "1")
                             BFSEL2 = network2.friendsBFS(src, target.getPersonality(), target.getMusic(), target.getNationality());
@@ -451,90 +231,7 @@ int main()
                         vector<pair<Person, int>> fMN4 = BFSEL2.at(5);
                         vector<pair<Person, int>> fPMN4 = BFSEL2.at(6);
 
-                        bool cont2 = true;
-                        while (cont2)
-                        {
-                            string input2;
-                            cout << "Recommend by: \n" << "1. Personality\n" << "2. Music\n" << "3. Nationality\n"
-                                << "4. Double Matches\n" << "5. Triple match\n" << "6. Change to my/chosen traits or BFS/DFS\n\n";
-                            getline(cin, input2);
-                            if (input2 == "1")
-                            {
-                                cout << "Recommending by Personality: \n" << "Your closest matches are... \n\n";
-                                for (int i = 0; i < 3; i++)
-                                {
-                                    network2.printPath(src, fPers4.at(i).first);
-                                    cout << "\n\n";
-                                }
-                            }
-                            else if (input2 == "2")
-                            {
-                                cout << "Recommending by Music Genre: \n" << "Your closest matches are... \n\n";
-                                for (int i = 0; i < 3; i++)
-                                {
-                                    network2.printPath(src, fMusic4.at(i).first);
-                                    cout << "\n\n";
-                                }
-                            }
-                            else if (input2 == "3")
-                            {
-                                cout << "Recommending by Nationality: \n" << "Your closest matches are... \n\n";
-                                for (int i = 0; i < 3; i++)
-                                {
-                                    network2.printPath(src, fNation4.at(i).first);
-                                    cout << "\n\n";
-                                }
-                            }
-                            else if (input2 == "4")
-                            {
-                                cout << "Showing double matches: \n"
-                                    << "Personality + Music: ";
-                                if (fPM4.size() == 0)
-                                    cout << "No matches\n\n";
-                                else {
-                                    network2.printPath(src, fPM4.at(0).first);
-                                    cout << "\n\n";
-                                }
-                                cout << "Personality + Nationality: ";
-                                if (fPN4.size() == 0)
-                                    cout << "No matches\n\n";
-                                else
-                                {
-                                    network2.printPath(src, fPN4.at(0).first);
-                                    cout << "\n\n";
-                                }
-                                cout << "Music + Nationality: ";
-                                if (fMN4.size() == 0)
-                                    cout << "No matches\n\n";
-                                else
-                                {
-                                    network2.printPath(src, fMN4.at(0).first);
-                                    cout << "\n\n";
-                                }
-                            }
-                            else if (input2 == "5")
-                            {
-                                cout << "Showing triple matches: \n";
-                                int max = 3;
-                                if (fPMN4.size() == 0)
-                                    cout << "No matches\n\n";
-                                if (fPMN4.size() < 3)
-                                    max = fPMN4.size();
-                                for (int i = 0; i < max; i++)
-                                {
-                                    network2.printPath(src, fPMN4.at(i).first);
-                                    cout << "\n\n";
-                                }
-                                cout << endl;
-                            }
-                            else if (input2 == "6")
-                                cont2 = false;
-                            else
-                            {
-                                cout << "Options are \"1\", \"2\", \"3\", \"4\", \"5\", and \"6\"\n\n";
-                                continue;
-                            }
-                        }
+                        printer2(network2, src, fPers4, fMusic4, fNation4, fPM4, fPN4, fMN4, fPMN4);
                     }
 
                     else if (input1 == "3")
@@ -543,7 +240,7 @@ int main()
                     {
                         cont = false;
                         cont6 = false;
-                        cont7 = false;
+                        cont1 = false;
                     }
                     else
                     {
@@ -553,7 +250,6 @@ int main()
 
                 }
             }
-
         }
         else
         {
@@ -562,6 +258,196 @@ int main()
     }
 	return 0;
 };
+
+
+
+
+void printer1(Graph network, Person src, vector<pair<Person, int>> fPers, vector<pair<Person, int>> fMusic,
+    vector<pair<Person, int>> fNation, vector<pair<Person, int>> fPM, vector<pair<Person, int>> fPN, vector<pair<Person, int>> fMN, vector<pair<Person, int>> fPMN)
+{
+   
+        bool cont2 = true;
+        while (cont2)
+        {
+            string input2;
+            cout << "Recommend by: \n\n" << "1. Personality\n" << "2. Music\n" << "3. Nationality\n"
+                << "4. Double Matches\n" << "5. Triple match\n" << "\n Or...\n\n" << "6. Change to my/chosen traits or BFS/DFS\n\n";
+            getline(cin, input2);
+            if (input2 == "1")
+            {
+                cout << "Recommending by Personality: \n" << "Your closest matches are... \n\n";
+                if (fPers.size() == 0)
+                    cout << "No matches\n\n";
+                else
+
+                {
+                    for (int i = 0; i < 3; i++)
+                    {
+                        network.printPath(src, fPers.at(i).first);
+                        cout << "\n\n";
+                    }
+                }
+
+            }
+            else if (input2 == "2")
+            {
+                cout << "Recommending by Music Genre: \n" << "Your closest matches are... \n\n";
+                for (int i = 0; i < 3; i++)
+                {
+                    network.printPath(src, fMusic.at(i).first);
+                    cout << "\n\n";
+                }
+            }
+            else if (input2 == "3")
+            {
+                cout << "Recommending by Nationality: \n" << "Your closest matches are... \n\n";
+                for (int i = 0; i < 3; i++)
+                {
+                    network.printPath(src, fNation.at(i).first);
+                    cout << "\n\n";
+                }
+            }
+            else if (input2 == "4")
+            {
+                cout << "Showing double matches: \n"
+                    << "Personality + Music: ";
+                network.printPath(src, fPM.at(0).first);
+                cout << "\n\n";
+                cout << "Personality + Nationality: ";
+                network.printPath(src, fPN.at(0).first);
+                cout << "\n\n";
+                cout << "Music + Nationality: ";
+                network.printPath(src, fMN.at(0).first);
+                cout << "\n\n";
+            }
+            else if (input2 == "5")
+            {
+                cout << "Showing triple matches: \n";
+                int max = 3;
+                if (fPMN.size() == 0)
+                    cout << "No matches\n\n";
+                if (fPMN.size() < 3)
+                    max = fPMN.size();
+                for (int i = 0; i < max; i++)
+                {
+                    network.printPath(src, fPMN.at(i).first);
+                    cout << "\n\n";
+                }
+                cout << endl;
+            }
+            else if (input2 == "6")
+            {
+                cont2 = false;
+                continue;
+            }
+            else
+            {
+                cout << "Options are \"1\", \"2\", \"3\", \"4\", \"5\", and \"6\"\n\n";
+                continue;
+            }
+        }
+    }
+void printer2(GraphEL network, Person src, vector<pair<Person, int>> fPers, vector<pair<Person, int>> fMusic,
+    vector<pair<Person, int>> fNation, vector<pair<Person, int>> fPM, vector<pair<Person, int>> fPN, vector<pair<Person, int>> fMN, vector<pair<Person, int>> fPMN)
+{
+
+    bool cont2 = true;
+    while (cont2)
+    {
+        string input2;
+        cout << "Recommend by: \n\n" << "1. Personality\n" << "2. Music\n" << "3. Nationality\n"
+            << "4. Double Matches\n" << "5. Triple match\n" << "\nOr...\n\n" "6. Change to my/chosen traits or BFS/DFS\n\n";
+        getline(cin, input2);
+        if (input2 == "1")
+        {
+            cout << "Recommending by Personality: \n" << "Your closest matches are... \n\n";
+            if (fPers.size() == 0)
+                cout << "No matches\n\n";
+            else
+
+            {
+                for (int i = 0; i < 3; i++)
+                {
+                    network.printPath(src, fPers.at(i).first);
+                    cout << "\n\n";
+                }
+            }
+
+        }
+        else if (input2 == "2")
+        {
+            cout << "Recommending by Music Genre: \n" << "Your closest matches are... \n\n";
+            for (int i = 0; i < 3; i++)
+            {
+                network.printPath(src, fMusic.at(i).first);
+                cout << "\n\n";
+            }
+        }
+        else if (input2 == "3")
+        {
+            cout << "Recommending by Nationality: \n" << "Your closest matches are... \n\n";
+            for (int i = 0; i < 3; i++)
+            {
+                network.printPath(src, fNation.at(i).first);
+                cout << "\n\n";
+            }
+        }
+        else if (input2 == "4")
+        {
+            cout << "Showing double matches: \n"
+                << "Personality + Music: ";
+            if (fPM.size() == 0)
+                cout << "No matches\n\n";
+            else {
+                network.printPath(src, fPM.at(0).first);
+                cout << "\n\n";
+            }
+            cout << "Personality + Nationality: ";
+            if (fPN.size() == 0)
+                cout << "No matches\n\n";
+            else
+            {
+                network.printPath(src, fPN.at(0).first);
+                cout << "\n\n";
+            }
+            cout << "Music + Nationality: ";
+            if (fMN.size() == 0)
+                cout << "No matches\n\n";
+            else
+            {
+                network.printPath(src, fMN.at(0).first);
+                cout << "\n\n";
+            }
+        }
+        else if (input2 == "5")
+        {
+            cout << "Showing triple matches: \n";
+            int max = 3;
+            if (fPMN.size() == 0)
+                cout << "No matches\n\n";
+            if (fPMN.size() < 3)
+                max = fPMN.size();
+            for (int i = 0; i < max; i++)
+            {
+                network.printPath(src, fPMN.at(i).first);
+                cout << "\n\n";
+            }
+            cout << endl;
+        }
+        else if (input2 == "6")
+        {
+            cont2 = false;
+            continue;
+        }
+        else
+        {
+            cout << "Options are \"1\", \"2\", \"3\", \"4\", \"5\", and \"6\"\n\n";
+            continue;
+        }
+    }
+}
+
+   
 
 void getStrings3(vector<string>& strings, string filePath)
 {
